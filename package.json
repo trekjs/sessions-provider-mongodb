@@ -1,0 +1,111 @@
+{
+  "name": "sessions-provider-mongodb",
+  "version": "0.0.0",
+  "description": "Sessions Mongodb Provider",
+  "main": "index.js",
+  "repository": "trekjs/sessions-provider-mongodb",
+  "author": {
+    "name": "Fangdun Cai",
+    "email": "<cfddream@gmail.com>",
+    "url": "fundon.me"
+  },
+  "license": "MIT",
+  "keywords": [
+    "trek",
+    "sessions",
+    "provider",
+    "redis"
+  ],
+  "engines": {
+    "node": ">=6"
+  },
+  "files": [
+    "LICENSE",
+    "CHANGELOG.md",
+    "README.md",
+    "index.js"
+  ],
+  "scripts": {
+    "lint": "xo",
+    "test": "xo && nyc ava"
+  },
+  "dependencies": {
+    "mongodb": "2.2.11"
+  },
+  "devDependencies": {
+    "ava": "0.17",
+    "babel-plugin-transform-async-to-generator": "6",
+    "babel-plugin-transform-es2015-modules-commonjs": "6",
+    "babel-preset-es2016": "6",
+    "babel-register": "6",
+    "nyc": "10",
+    "request": "2",
+    "request-promise": "4",
+    "trek-engine": "0.5",
+    "xo": "0.17"
+  },
+  "ava": {
+    "concurrency": 5,
+    "require": "babel-register"
+  },
+  "babel": {
+    "plugins": [
+      "transform-async-to-generator",
+      "transform-es2015-modules-commonjs"
+    ],
+    "presets": [
+      "es2016"
+    ]
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "es6"
+    ],
+    "semicolon": false,
+    "space": true,
+    "ignores": [],
+    "rules": {
+      "curly": 0,
+      "import/no-dynamic-require": 0,
+      "import/no-named-as-default": 0,
+      "max-lines": 0,
+      "no-warning-comments": [
+        "error",
+        {
+          "terms": [
+            "todo",
+            "fixme"
+          ],
+          "location": "anywhere"
+        }
+      ],
+      "no-unused-expressions": [
+        "error",
+        {
+          "allowTernary": true
+        }
+      ],
+      "object-curly-spacing": [
+        "error",
+        "always",
+        {
+          "arraysInObjects": true,
+          "objectsInObjects": true
+        }
+      ],
+      "space-before-function-paren": [
+        2,
+        "always"
+      ],
+      "yoda": 0
+    }
+  },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text"
+    ]
+  }
+}
