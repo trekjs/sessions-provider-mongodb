@@ -1,6 +1,6 @@
 {
   "name": "sessions-provider-mongodb",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Sessions Mongodb Provider",
   "main": "index.js",
   "repository": "trekjs/sessions-provider-mongodb",
