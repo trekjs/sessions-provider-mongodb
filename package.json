@@ -14,10 +14,10 @@
     "trek",
     "sessions",
     "provider",
-    "redis"
+    "mongodb"
   ],
   "engines": {
-    "node": ">=6"
+    "node": ">=7"
   },
   "files": [
     "LICENSE",
@@ -30,31 +30,25 @@
     "test": "xo && nyc ava"
   },
   "dependencies": {
-    "mongodb": "2.2.11"
+    "mongodb": "^2.2.25"
   },
   "devDependencies": {
-    "ava": "0.17",
-    "babel-plugin-transform-async-to-generator": "6",
-    "babel-plugin-transform-es2015-modules-commonjs": "6",
-    "babel-preset-es2016": "6",
-    "babel-register": "6",
+    "ava": "0.19",
     "nyc": "10",
     "request": "2",
     "request-promise": "4",
-    "trek-engine": "0.5",
-    "xo": "0.17"
+    "trek-engine": "1",
+    "trek-sessions": "^0.1.5",
+    "xo": "0.18"
   },
   "ava": {
-    "concurrency": 5,
-    "require": "babel-register"
+    "concurrency": 5
   },
-  "babel": {
-    "plugins": [
-      "transform-async-to-generator",
-      "transform-es2015-modules-commonjs"
-    ],
-    "presets": [
-      "es2016"
+  "nyc": {
+    "reporter": [
+      "html",
+      "lcov",
+      "text"
     ]
   },
   "xo": {
@@ -101,11 +95,5 @@
       ],
       "yoda": 0
     }
-  },
-  "nyc": {
-    "reporter": [
-      "lcov",
-      "text"
-    ]
   }
 }
