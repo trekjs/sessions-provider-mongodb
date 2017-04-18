@@ -54,9 +54,19 @@ module.exports = class MongodbProvider {
   }
 
   async get (sid) {
-    return (await this.collection).findOne({ _id: sid }).then(d => {
-      return (d && d.session)
-    })
+    const d = await (await this.collection).findOne({ _id: sid })
+
+    if (d) {
+      const { session, expires } = d
+
+      // See: https://docs.mongodb.com/manual/tutorial/expire-data/
+      if (expires < Date.now()) {
+        await this.delete(sid)
+        return
+      }
+
+      return session
+    }
   }
 
   async has (sid) {

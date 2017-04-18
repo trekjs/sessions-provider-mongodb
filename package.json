@@ -1,6 +1,6 @@
 {
   "name": "sessions-provider-mongodb",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Sessions Mongodb Provider",
   "main": "index.js",
   "repository": "trekjs/sessions-provider-mongodb",
@@ -35,10 +35,6 @@
   "devDependencies": {
     "ava": "0.19",
     "nyc": "10",
-    "request": "2",
-    "request-promise": "4",
-    "trek-engine": "1",
-    "trek-sessions": "^0.1.5",
     "xo": "0.18"
   },
   "ava": {

@@ -22,7 +22,7 @@ test('should return undefined', async t => {
 
   const sess = await provider.get('233')
 
-  t.is(sess, null)
+  t.is(sess, undefined)
 
   await provider.quit()
 })
@@ -60,7 +60,7 @@ test('should delete a session', async t => {
 
   sess = await provider.get('233')
 
-  t.is(sess, null)
+  t.is(sess, undefined)
 
   await provider.quit()
 })
@@ -81,8 +81,8 @@ test('should clear all sessions', async t => {
   const sess0 = await provider.get('233')
   const sess1 = await provider.get('377')
 
-  t.is(sess0, null)
-  t.is(sess1, null)
+  t.is(sess0, undefined)
+  t.is(sess1, undefined)
 
   await provider.quit()
 })
@@ -120,12 +120,11 @@ test('should automatically delete a session', async t => {
     cookie: {}
   })
 
-  await sleep(4500)
+  await sleep(500)
 
   const sess2 = await provider.get('1024')
 
-  // See: https://docs.mongodb.com/manual/tutorial/expire-data/
-  t.is(sess2, null)
+  t.is(sess2, undefined)
 
   await provider.quit()
 })
