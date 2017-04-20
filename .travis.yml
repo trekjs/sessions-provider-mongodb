@@ -1,24 +1,19 @@
-env:
-  - CXX=g++-4.8 TRAVIS=true
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-4.8
-services:
-  - mongodb
+sudo: required
 
 cache:
   directories:
     - node_modules
 
-sudo: false
 language: node_js
 node_js:
   - "7"
 script:
   - npm test
+before_script:
+  - "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10"
+  - "echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list"
+  - "sudo apt-get update"
+  - "sudo apt-get install mongodb-org-server"
 after_script:
   - npm install codecov
   - ./node_modules/.bin/codecov

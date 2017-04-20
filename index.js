@@ -53,15 +53,15 @@ module.exports = class MongodbProvider {
     return (await this.collection).remove({})
   }
 
-  async get (sid) {
-    const d = await (await this.collection).findOne({ _id: sid })
+  async get (_id) {
+    const d = await (await this.collection).findOne({ _id })
 
     if (d) {
       const { session, expires } = d
 
       // See: https://docs.mongodb.com/manual/tutorial/expire-data/
-      if (expires < Date.now()) {
-        await this.delete(sid)
+      if (expires <= Date.now()) {
+        await this.delete(_id)
         return
       }
 
@@ -73,16 +73,16 @@ module.exports = class MongodbProvider {
     return Boolean(await this.get(sid))
   }
 
-  async set (sid, session, expires = 0) {
+  async set (_id, session, expires = 0) {
     return (await this.collection).update(
-      { _id: sid },
+      { _id },
       { session, expires: new Date(Date.now() + expires) },
       { upsert: true }
     )
   }
 
-  async delete (sid) {
-    return (await this.collection).remove({ _id: sid })
+  async delete (_id) {
+    return (await this.collection).remove({ _id })
   }
 
   quit () {

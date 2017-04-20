@@ -30,11 +30,11 @@ test('should return undefined', async t => {
 test('should save a session', async t => {
   const provider = new MongodbProvider()
 
-  await provider.set('233', {
+  await provider.set('377', {
     cookie: {}
   }, 2000)
 
-  const sess = await provider.get('233')
+  const sess = await provider.get('377')
 
   t.deepEqual(sess, {
     cookie: {}
@@ -46,43 +46,21 @@ test('should save a session', async t => {
 test('should delete a session', async t => {
   const provider = new MongodbProvider()
 
-  await provider.set('233', {
+  await provider.set('610', {
     cookie: {}
   }, 2000)
 
-  let sess = await provider.get('233')
+  let sess = await provider.get('610')
 
   t.deepEqual(sess, {
     cookie: {}
   })
 
-  await provider.delete('233')
+  await provider.delete('610')
 
-  sess = await provider.get('233')
+  sess = await provider.get('610')
 
   t.is(sess, undefined)
-
-  await provider.quit()
-})
-
-test('should clear all sessions', async t => {
-  const provider = new MongodbProvider()
-
-  await provider.set('233', {
-    cookie: {}
-  }, 2000)
-
-  await provider.set('377', {
-    cookie: {}
-  }, 2000)
-
-  await provider.clear('233')
-
-  const sess0 = await provider.get('233')
-  const sess1 = await provider.get('377')
-
-  t.is(sess0, undefined)
-  t.is(sess1, undefined)
 
   await provider.quit()
 })
@@ -90,23 +68,21 @@ test('should clear all sessions', async t => {
 test('should throw error when mongodb is already closed', async t => {
   const provider = new MongodbProvider()
 
-  await provider.set('610', 'trek engine', 2000)
+  await provider.set('987', 'trek engine', 2000)
 
-  const has = await provider.has('610')
+  const has = await provider.has('987')
 
   t.is(has, true)
 
   await provider.quit()
 
-  const error = await t.throws(provider.get('610'))
+  const error = await t.throws(provider.get('987'))
 
   t.true(/opology was destroyed/.test(error.message))
 })
 
 test('should automatically delete a session', async t => {
-  const provider = new MongodbProvider({
-    collectionName: 'sessions2'
-  })
+  const provider = new MongodbProvider()
 
   await provider.set('1024', {
     cookie: {}
@@ -125,6 +101,30 @@ test('should automatically delete a session', async t => {
   const sess2 = await provider.get('1024')
 
   t.is(sess2, undefined)
+
+  await provider.quit()
+})
+
+test('should clear all sessions', async t => {
+  const provider = new MongodbProvider({
+    collectionName: 'sess2'
+  })
+
+  await provider.set('233', {
+    cookie: {}
+  }, 2000)
+
+  await provider.set('377', {
+    cookie: {}
+  }, 2000)
+
+  await provider.clear()
+
+  const sess0 = await provider.get('233')
+  const sess1 = await provider.get('377')
+
+  t.is(sess0, undefined)
+  t.is(sess1, undefined)
 
   await provider.quit()
 })
