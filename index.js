@@ -6,6 +6,7 @@
 
 'use strict'
 
+const Emitter = require('events')
 const { MongoClient } = require('mongodb')
 
 const defaults = {
@@ -26,23 +27,22 @@ module.exports = class MongodbProvider {
       if (!(k in defaults)) delete options[k]
     })
     Object.assign(this, defaults, options)
+    this.client = new Emitter()
+    this.connect()
   }
 
-  get client () {
-    return MongoClient.connect(this.uri, this.options)
+  connect () {
+    return MongoClient.connect(this.uri, this.options).then(db => {
+      this.client.emit('connect', this[DB] = db)
+      return db
+        .collection(this.collectionName)
+        .ensureIndex({ expires: 1 }, { expireAfterSeconds: 3600 })
+        .then(() => db)
+    })
   }
 
   get db () {
-    if (!this[DB]) {
-      return this.client.then(db => {
-        this[DB] = db
-        return db
-          .collection(this.collectionName)
-          .ensureIndex({ expires: 1 }, { expireAfterSeconds: 3600 })
-          .then(() => db)
-      })
-    }
-    return Promise.resolve(this[DB])
+    return this[DB] ? Promise.resolve(this[DB]) : this.connect()
   }
 
   get collection () {
@@ -86,7 +86,10 @@ module.exports = class MongodbProvider {
   }
 
   quit () {
-    return this.db.then(db => db.close())
+    return this.db.then(db => {
+      db.close()
+      this.client.emit('close')
+    })
   }
 
 }
