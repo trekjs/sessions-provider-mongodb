@@ -30,7 +30,7 @@
     "test": "xo && nyc ava"
   },
   "dependencies": {
-    "mongodb": "^2.2.25"
+    "mongodb": "^2.2.26"
   },
   "devDependencies": {
     "ava": "0.19",
