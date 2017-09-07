@@ -1,7 +1,7 @@
 import test from 'ava'
 import MongodbProvider from './'
 
-function sleep (ttl = 1000) {
+function sleep(ttl = 1000) {
   return new Promise(resolve => {
     setTimeout(resolve, ttl)
   })
@@ -30,9 +30,13 @@ test('should return undefined', async t => {
 test('should save a session', async t => {
   const provider = new MongodbProvider()
 
-  await provider.set('377', {
-    cookie: {}
-  }, 2000)
+  await provider.set(
+    '377',
+    {
+      cookie: {}
+    },
+    2000
+  )
 
   const sess = await provider.get('377')
 
@@ -46,9 +50,13 @@ test('should save a session', async t => {
 test('should delete a session', async t => {
   const provider = new MongodbProvider()
 
-  await provider.set('610', {
-    cookie: {}
-  }, 2000)
+  await provider.set(
+    '610',
+    {
+      cookie: {}
+    },
+    2000
+  )
 
   let sess = await provider.get('610')
 
@@ -70,9 +78,17 @@ test('should throw error when mongodb is already closed', async t => {
 
   await provider.set('987', 'trek engine', 2000)
 
-  const has = await provider.has('987')
+  const h0 = await provider.has('987')
 
-  t.is(has, true)
+  t.is(h0, true)
+
+  const h1 = await provider.has('989')
+
+  t.is(h1, false)
+
+  const h2 = await provider.has('987')
+
+  t.is(h2, true)
 
   await provider.quit()
 
@@ -84,9 +100,13 @@ test('should throw error when mongodb is already closed', async t => {
 test('should automatically delete a session', async t => {
   const provider = new MongodbProvider()
 
-  await provider.set('1024', {
-    cookie: {}
-  }, 1000)
+  await provider.set(
+    '1024',
+    {
+      cookie: {}
+    },
+    1000
+  )
 
   await sleep(500)
 
@@ -110,13 +130,21 @@ test('should clear all sessions', async t => {
     collectionName: 'sess2'
   })
 
-  await provider.set('233', {
-    cookie: {}
-  }, 2000)
+  await provider.set(
+    '233',
+    {
+      cookie: {}
+    },
+    2000
+  )
 
-  await provider.set('377', {
-    cookie: {}
-  }, 2000)
+  await provider.set(
+    '377',
+    {
+      cookie: {}
+    },
+    2000
+  )
 
   await provider.clear()
 

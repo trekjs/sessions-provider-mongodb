@@ -21,8 +21,7 @@ const defaults = {
 const DB = Symbol('MongodbProvider#db')
 
 module.exports = class MongodbProvider {
-
-  constructor (options = {}) {
+  constructor(options = {}) {
     Object.keys(options).forEach(k => {
       if (!(k in defaults)) delete options[k]
     })
@@ -31,9 +30,9 @@ module.exports = class MongodbProvider {
     this.connect()
   }
 
-  connect () {
+  connect() {
     return MongoClient.connect(this.uri, this.options).then(db => {
-      this.client.emit('connect', this[DB] = db)
+      this.client.emit('connect', (this[DB] = db))
       return db
         .collection(this.collectionName)
         .ensureIndex({ expires: 1 }, { expireAfterSeconds: 3600 })
@@ -41,19 +40,19 @@ module.exports = class MongodbProvider {
     })
   }
 
-  get db () {
+  get db() {
     return this[DB] ? Promise.resolve(this[DB]) : this.connect()
   }
 
-  get collection () {
+  get collection() {
     return this.db.then(db => db.collection(this.collectionName))
   }
 
-  async clear () {
+  async clear() {
     return (await this.collection).remove({})
   }
 
-  async get (_id) {
+  async get(_id) {
     const d = await (await this.collection).findOne({ _id })
 
     if (d) {
@@ -69,11 +68,11 @@ module.exports = class MongodbProvider {
     }
   }
 
-  async has (sid) {
-    return Boolean(await this.get(sid))
+  async has(_id) {
+    return Boolean(await this.get(_id))
   }
 
-  async set (_id, session, expires = 0) {
+  async set(_id, session, expires = 0) {
     return (await this.collection).update(
       { _id },
       { session, expires: new Date(Date.now() + expires) },
@@ -81,15 +80,14 @@ module.exports = class MongodbProvider {
     )
   }
 
-  async delete (_id) {
+  async delete(_id) {
     return (await this.collection).remove({ _id })
   }
 
-  quit () {
+  quit() {
     return this.db.then(db => {
       db.close()
       this.client.emit('close')
     })
   }
-
 }

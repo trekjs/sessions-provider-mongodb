@@ -56,6 +56,17 @@ start().catch(console.error)
 
 ## API
 
+* `get(sid)`
+
+* `set(sid, sess, expires)`
+
+* `has(sid)`
+
+* `delete(sid)`
+
+* `clear()`
+
+* `quit()`
 
 
 ## Badges
